@@ -50,6 +50,14 @@ class MainActivity : ComponentActivity() {
 
                     Screen.HOME -> HomeScreen(
                         language = settings.language,
+                        onSpeakAnimal = { animal, lang ->
+                            val name = when (lang) {
+                                AppLanguage.CHINESE  -> animal.nameChinese
+                                AppLanguage.ENGLISH  -> animal.nameEnglish
+                                AppLanguage.JAPANESE -> animal.nameJapanese
+                            }
+                            ttsManager.speakText(name, lang)
+                        },
                         onStart = {
                             gameViewModel.init(
                                 gameSettings = settings,
@@ -70,7 +78,8 @@ class MainActivity : ComponentActivity() {
                     Screen.SETTINGS -> SettingsScreen(
                         settings = settings,
                         onSettingsChanged = { settings = it },
-                        onBack = { screen = Screen.HOME }
+                        onBack = { screen = Screen.HOME },
+                        leaderboardRepository = repository
                     )
 
                     Screen.GAME -> GameScreen(

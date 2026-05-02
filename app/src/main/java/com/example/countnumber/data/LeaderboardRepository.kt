@@ -20,6 +20,12 @@ class LeaderboardRepository(private val context: Context) {
         parseEntries(raw)
     }
 
+    suspend fun clearAll() {
+        context.dataStore.edit { prefs ->
+            prefs[LEADERBOARD_KEY] = ""
+        }
+    }
+
     suspend fun addEntry(entry: LeaderboardEntry) {
         context.dataStore.edit { prefs ->
             val raw = prefs[LEADERBOARD_KEY] ?: ""

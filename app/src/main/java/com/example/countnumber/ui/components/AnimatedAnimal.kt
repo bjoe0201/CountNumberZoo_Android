@@ -1,31 +1,31 @@
 package com.example.countnumber.ui.components
 
-import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.foundation.layout.offset
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlin.random.Random
 
 @Composable
-fun FloatingAnimal(emoji: String, index: Int) {
+fun FloatingAnimal(
+    emoji: String,
+    index: Int,
+    onClick: () -> Unit = {}
+) {
     val config = LocalConfiguration.current
     val screenW = config.screenWidthDp
     val screenH = config.screenHeightDp
@@ -70,9 +70,13 @@ fun FloatingAnimal(emoji: String, index: Int) {
 
     Text(
         text = emoji,
-        fontSize = 36.sp,
+        fontSize = 72.sp,
         modifier = Modifier
             .offset(offsetX.dp, offsetY.dp)
             .rotate(rotation)
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null   // 不顯示點擊漣漪，保持可愛感
+            ) { onClick() }
     )
 }

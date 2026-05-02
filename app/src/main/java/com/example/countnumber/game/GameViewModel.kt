@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlin.math.max
-import kotlin.math.min
 import kotlin.random.Random
 
 class GameViewModel : ViewModel() {
@@ -110,13 +109,12 @@ class GameViewModel : ViewModel() {
                 distractors.add(candidate)
             }
         }
-        // Fill remaining with sequential if needed
         var fill = 1
         while (distractors.size < 4) {
             if (fill != correct && !distractors.contains(fill)) distractors.add(fill)
             fill++
         }
-        val all = (distractors.take(4) + correct).shuffled()
-        return all
+        return (distractors.take(4) + correct).shuffled()
     }
 }
+

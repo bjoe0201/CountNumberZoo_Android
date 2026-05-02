@@ -171,6 +171,42 @@ object AppStrings {
         AppLanguage.JAPANESE -> "にち"
     }
 
+    fun clearLeaderboard(lang: AppLanguage) = when (lang) {
+        AppLanguage.CHINESE -> "清除排行榜記錄"
+        AppLanguage.ENGLISH -> "Clear Leaderboard"
+        AppLanguage.JAPANESE -> "ランキングをリセット"
+    }
+
+    fun clearConfirm1(lang: AppLanguage) = when (lang) {
+        AppLanguage.CHINESE -> "確定要清除所有記錄？"
+        AppLanguage.ENGLISH -> "Clear all records?"
+        AppLanguage.JAPANESE -> "全記録を消しますか？"
+    }
+
+    fun clearConfirm2(lang: AppLanguage) = when (lang) {
+        AppLanguage.CHINESE -> "真的確定？清除後無法復原！"
+        AppLanguage.ENGLISH -> "Really sure? Cannot be undone!"
+        AppLanguage.JAPANESE -> "本当によいですか？元に戻せません！"
+    }
+
+    fun clearConfirmBtn(lang: AppLanguage) = when (lang) {
+        AppLanguage.CHINESE -> "確定清除"
+        AppLanguage.ENGLISH -> "Yes, Clear"
+        AppLanguage.JAPANESE -> "はい、消す"
+    }
+
+    fun cancel(lang: AppLanguage) = when (lang) {
+        AppLanguage.CHINESE -> "取消"
+        AppLanguage.ENGLISH -> "Cancel"
+        AppLanguage.JAPANESE -> "キャンセル"
+    }
+
+    fun clearDone(lang: AppLanguage) = when (lang) {
+        AppLanguage.CHINESE -> "已清除！"
+        AppLanguage.ENGLISH -> "Cleared!"
+        AppLanguage.JAPANESE -> "リセット完了！"
+    }
+
     fun changeLanguage(lang: AppLanguage) = when (lang) {
         AppLanguage.CHINESE -> "切換語言"
         AppLanguage.ENGLISH -> "Change Language"

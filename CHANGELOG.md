@@ -7,6 +7,18 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.0.2] — 2026-05-02
+
+### Added
+- **Home screen animals enlarged** — doubled the size of floating animals for better visibility (72.sp instead of 36.sp)
+- **Interactive tip text** — "Tap animals to hear pronunciation" hint at the bottom of home screen in 3 languages (Chinese / English / Japanese)
+
+### Improved
+- Better visual appeal with larger, more prominent floating animals
+- Enhanced user guidance for home screen interactions
+
+---
+
 ## [1.0.1] — 2026-05-02
 
 ### Fixed
