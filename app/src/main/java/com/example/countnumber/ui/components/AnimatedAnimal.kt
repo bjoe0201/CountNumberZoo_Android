@@ -24,17 +24,18 @@ import kotlin.random.Random
 fun FloatingAnimal(
     emoji: String,
     index: Int,
+    reshuffleKey: Int = 0,
     onClick: () -> Unit = {}
 ) {
     val config = LocalConfiguration.current
     val screenW = config.screenWidthDp
     val screenH = config.screenHeightDp
 
-    val startX = remember { Random.nextFloat() * screenW }
-    val startY = remember { Random.nextFloat() * screenH }
-    val duration = remember { 3000 + Random.nextInt(3000) }
-    val bounceDuration = remember { 500 + Random.nextInt(500) }
-    val rotateDuration = remember { 2000 + Random.nextInt(2000) }
+    val startX = remember(reshuffleKey) { Random.nextFloat() * screenW }
+    val startY = remember(reshuffleKey) { Random.nextFloat() * screenH }
+    val duration = remember(reshuffleKey) { 3000 + Random.nextInt(3000) }
+    val bounceDuration = remember(reshuffleKey) { 500 + Random.nextInt(500) }
+    val rotateDuration = remember(reshuffleKey) { 2000 + Random.nextInt(2000) }
 
     val infiniteTransition = rememberInfiniteTransition(label = "animal_$index")
 

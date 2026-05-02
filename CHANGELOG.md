@@ -7,6 +7,14 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.0.3] — 2026-05-02
+
+### Added
+- **退出測試按鈕** — 遊戲畫面「有幾隻？」列最右側新增退出按鈕（支援中 / EN / JA）
+- **AlertDialog 二次確認** — 點擊退出後彈出置中確認視窗，防止誤觸；可點選「繼續遊戲」取消
+
+---
+
 ## [1.0.2] — 2026-05-02
 
 ### Added

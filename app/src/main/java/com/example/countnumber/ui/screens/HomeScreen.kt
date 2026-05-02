@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -61,6 +62,7 @@ fun HomeScreen(
     // Which language to speak next; starts at the default language's index in the cycle
     val startIdx = remember(language) { LANG_CYCLE.indexOf(language).coerceAtLeast(0) }
     var cycleOffset by remember(language) { mutableIntStateOf(0) }
+    var reshuffleKey by remember { mutableIntStateOf(0) }
 
     Box(
         modifier = Modifier
@@ -76,12 +78,31 @@ fun HomeScreen(
             FloatingAnimal(
                 emoji = animal.emoji,
                 index = index,
+                reshuffleKey = reshuffleKey,
                 onClick = {
                     val langToSpeak = LANG_CYCLE[(startIdx + cycleOffset) % 3]
                     onSpeakAnimal(animal, langToSpeak)
                     cycleOffset = (cycleOffset + 1) % 3
                 }
             )
+        }
+
+        // Reshuffle button — bottom left corner
+        Button(
+            onClick = { reshuffleKey++ },
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .padding(12.dp)
+                .height(36.dp),
+            shape = RoundedCornerShape(12.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.75f)),
+            contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 10.dp, vertical = 0.dp)
+        ) {
+            Text("🔀 " + when (language) {
+                AppLanguage.CHINESE -> "動物換位置"
+                AppLanguage.ENGLISH -> "Shuffle"
+                AppLanguage.JAPANESE -> "シャッフル"
+            }, fontSize = 12.sp, color = Color(0xFF555555))
         }
 
         // Version label — bottom right corner

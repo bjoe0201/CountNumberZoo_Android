@@ -54,6 +54,7 @@ app/src/main/java/com/example/countnumber/
 ├── data/
 │   ├── Animal.kt                    — 20 animals (emoji + names in ZH/EN/JA)
 │   ├── AppStrings.kt                — all UI strings in 3 languages
+│   ├── AppVersion.kt                — APP_VERSION constant (shown on Home screen)
 │   ├── GameSettings.kt              — GameSettings data class + LayoutMode enum
 │   ├── GameResult.kt                — LeaderboardEntry model
 │   └── LeaderboardRepository.kt    — DataStore read/write, top-10
@@ -122,3 +123,45 @@ All UI text goes through `AppStrings` object (no Android string resources). `App
 ## Theme
 
 Forced light mode only — no dark theme, no dynamic color. Child-friendly palette defined in `Color.kt` (`SkyBlue`, `GrassGreen`, `SunshineYellow`, `OrangePeel`, etc.).
+
+---
+
+## ⚠️ Version Update Checklist
+
+每次發佈新版本時，**必須同步更新以下所有地方**，缺一不可：
+
+| # | 檔案 | 位置 | 說明 |
+|---|------|------|------|
+| 1 | `app/build.gradle.kts` | `versionCode` | 整數，每版 +1（例：4） |
+| 2 | `app/build.gradle.kts` | `versionName` | 語意版號字串（例："1.0.3"） |
+| 3 | `app/src/main/java/com/example/countnumber/data/AppVersion.kt` | `APP_VERSION` | 與 `versionName` 相同（例："1.0.3"），顯示在主畫面右下角 |
+| 4 | `README.md` | 第一段 `**版本 Version：vX.X.X**` | 更新顯示版號 |
+| 5 | `CHANGELOG.md` | 頂部新增 `## [X.X.X] — YYYY-MM-DD` 區塊 | 記錄本版本變更內容 |
+
+### 更新後的發佈流程
+
+```bash
+# 1. 更新上方5個地方後，構建 release APK
+./gradlew clean assembleRelease -x test
+
+# 2. 提交所有變更
+git add -A
+git commit -m "release: vX.X.X — <簡短說明>"
+
+# 3. 推送到 GitHub
+git push origin main
+
+# 4. 建立並推送 tag
+git tag -a vX.X.X -m "Release vX.X.X"
+git push origin vX.X.X
+
+# 5. 刪除舊 release（保留最新）
+gh release delete vX.X.X-1 --yes
+git push origin :refs/tags/vX.X.X-1   # 若需要也刪除舊 tag
+
+# 6. 建立新 release 並上傳 APK
+gh release create vX.X.X "app/build/outputs/apk/release/app-release-unsigned.apk" \
+  --title "動物數數 vX.X.X — <標題>" \
+  --notes "<繁體中文 release 說明>"
+```
+
