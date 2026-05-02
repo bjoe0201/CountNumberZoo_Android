@@ -1,10 +1,15 @@
-# 🦁 動物數數 — Animal Counting
+<div align="center">
+  <img src="PIC/app_icon.svg" width="120" height="120" alt="動物數數 App Icon"/>
+
+# 動物數數 — Animal Counting
 
 > 專為 **1–6 歲小朋友** 設計的數數遊戲！
 > A fun counting game for kids aged 1–6!
 > 1〜6歳のこどものためのかずあそびゲーム！
 
 **版本 Version：v1.0.0** ｜ 授權 License：MIT ｜ 平台 Platform：Android (API 31+)
+
+</div>
 
 ---
 
