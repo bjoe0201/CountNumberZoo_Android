@@ -7,6 +7,19 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.0.1] — 2026-05-02
+
+### Fixed
+- Improved UI stability and performance across all screens
+- Enhanced animal grid layout responsiveness
+- Optimized TTS timing sequences
+
+### Changed
+- Fine-tuned feedback overlay animations
+- Improved leaderboard display formatting
+
+---
+
 ## [1.0.0] — 2026-05-02
 
 ### Added
