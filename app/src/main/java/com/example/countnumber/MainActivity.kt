@@ -9,7 +9,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.countnumber.data.AppLanguage
 import com.example.countnumber.data.GameSettings
 import com.example.countnumber.data.LeaderboardRepository
 import com.example.countnumber.game.GameUiState
@@ -51,21 +50,18 @@ class MainActivity : ComponentActivity() {
                     Screen.HOME -> HomeScreen(
                         language = settings.language,
                         onSpeakAnimal = { animal, lang ->
-                            val name = when (lang) {
-                                AppLanguage.CHINESE  -> animal.nameChinese
-                                AppLanguage.ENGLISH  -> animal.nameEnglish
-                                AppLanguage.JAPANESE -> animal.nameJapanese
-                            }
-                            ttsManager.speakText(name, lang)
+                            ttsManager.speakAnimalName(animal, lang)
                         },
                         onStart = {
+                            val gameLanguage = settings.language
+                            val voiceMode = settings.voiceMode
                             gameViewModel.init(
                                 gameSettings = settings,
-                                speakNumber = { num ->
-                                    ttsManager.speak(num, settings.language)
+                                speakRoundCount = { num, animal ->
+                                    ttsManager.speakGameCount(num, animal, gameLanguage, voiceMode)
                                 },
                                 speakFeedback = { correct ->
-                                    ttsManager.speakFeedback(correct, settings.language)
+                                    ttsManager.speakFeedback(correct, gameLanguage)
                                 }
                             )
                             screen = Screen.GAME
@@ -96,13 +92,15 @@ class MainActivity : ComponentActivity() {
                         language = settings.language,
                         repository = repository,
                         onPlayAgain = {
+                            val gameLanguage = settings.language
+                            val voiceMode = settings.voiceMode
                             gameViewModel.init(
                                 gameSettings = settings,
-                                speakNumber = { num ->
-                                    ttsManager.speak(num, settings.language)
+                                speakRoundCount = { num, animal ->
+                                    ttsManager.speakGameCount(num, animal, gameLanguage, voiceMode)
                                 },
                                 speakFeedback = { correct ->
-                                    ttsManager.speakFeedback(correct, settings.language)
+                                    ttsManager.speakFeedback(correct, gameLanguage)
                                 }
                             )
                             screen = Screen.GAME

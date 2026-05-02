@@ -3,6 +3,7 @@ package com.example.countnumber.game
 import com.example.countnumber.data.Animal
 
 data class RoundState(
+    val animal: Animal,
     val animals: List<Animal>,
     val count: Int,
     val answers: List<Int>,

@@ -7,7 +7,7 @@
 > A fun counting game for kids aged 1–6!
 > 1〜6歳のこどものためのかずあそびゲーム！
 
-**版本 Version：v1.0.3** ｜ 授權 License：MIT ｜ 平台 Platform：Android (API 31+)
+**版本 Version：v1.0.4** ｜ 授權 License：MIT ｜ 平台 Platform：Android (API 31+)
 
 </div>
 
@@ -110,7 +110,7 @@ The app reads out the number and result with voice, so children learn while they
 |------|------|------|
 | 📝 題數 | 每次玩幾題 | 3 ~ 20 題 |
 | 🐾 最多幾隻 | 最多出現幾隻動物 | 5 ~ 100 隻 |
-| 🔊 語音 | 開/關 數字朗讀 | — |
+| 🔊 語音 | 無 / 數字 / 數字+動物名 | — |
 | 📐 排列方式 | 整齊格子 或 隨機散佈 | — |
 | 🌍 語言 | 中文 / English / 日本語 | — |
 
@@ -120,7 +120,7 @@ The app reads out the number and result with voice, so children learn while they
 
 - 🐾 **20 種可愛動物** — 狗🐶 貓🐱 兔🐰 熊🐻 熊貓🐼 豬🐷 牛🐮 青蛙🐸 猴🐵 獅子🦁 老虎🐯 雞🐔 企鵝🐧 鯨魚🐳 大象🐘 長頸鹿🦒 羊🐑 馬🐴 蝴蝶🦋 烏龜🐢
 - 🌍 **三種語言** — 中文、English、日本語，介面＋語音一起切換
-- 🔊 **語音朗讀** — 點動物時唸數字、按答案先唸選的數字再唸對錯
+- 🔊 **語音模式** — 可選「無 / 數字 / 數字+動物名」，點動物與按答案都會依設定語系朗讀
 - 📏 **自動縮放** — 不管幾隻動物，都會剛好填滿畫面、置中顯示
 - 🎨 **可愛配色** — 明亮活潑的兒童專屬配色
 - 👨‍👩‍👧 **多人共用** — 用動物 emoji 區分不同小朋友的名字，一台手機全家都能玩

@@ -7,6 +7,12 @@ data class Animal(
     val nameEnglish: String
 )
 
+fun Animal.localizedName(language: AppLanguage) = when (language) {
+    AppLanguage.CHINESE -> nameChinese
+    AppLanguage.ENGLISH -> nameEnglish
+    AppLanguage.JAPANESE -> nameJapanese
+}
+
 val ALL_ANIMALS = listOf(
     Animal("\uD83D\uDC36", "狗", "いぬ", "Dog"),
     Animal("\uD83D\uDC31", "貓", "ねこ", "Cat"),

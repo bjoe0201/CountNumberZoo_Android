@@ -69,6 +69,24 @@ object AppStrings {
         AppLanguage.JAPANESE -> "おんせい"
     }
 
+    fun voiceNone(lang: AppLanguage) = when (lang) {
+        AppLanguage.CHINESE -> "無"
+        AppLanguage.ENGLISH -> "None"
+        AppLanguage.JAPANESE -> "なし"
+    }
+
+    fun voiceNumber(lang: AppLanguage) = when (lang) {
+        AppLanguage.CHINESE -> "數字"
+        AppLanguage.ENGLISH -> "Number"
+        AppLanguage.JAPANESE -> "数字"
+    }
+
+    fun voiceNumberWithAnimal(lang: AppLanguage) = when (lang) {
+        AppLanguage.CHINESE -> "數字+動物名"
+        AppLanguage.ENGLISH -> "Number + Animal"
+        AppLanguage.JAPANESE -> "数字+動物名"
+    }
+
     fun layout(lang: AppLanguage) = when (lang) {
         AppLanguage.CHINESE -> "排列方式"
         AppLanguage.ENGLISH -> "Layout"

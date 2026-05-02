@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.countnumber.data.ALL_ANIMALS
 import com.example.countnumber.data.Animal
 import com.example.countnumber.data.GameSettings
+import com.example.countnumber.data.VoiceMode
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,16 +20,16 @@ class GameViewModel : ViewModel() {
     val uiState: StateFlow<GameUiState> = _uiState.asStateFlow()
 
     private lateinit var settings: GameSettings
-    private var onSpeakNumber: ((Int) -> Unit)? = null
+    private var onSpeakRoundCount: ((Int, Animal) -> Unit)? = null
     private var onSpeakFeedback: ((Boolean) -> Unit)? = null
 
     fun init(
         gameSettings: GameSettings,
-        speakNumber: (Int) -> Unit,
+        speakRoundCount: (Int, Animal) -> Unit,
         speakFeedback: (Boolean) -> Unit
     ) {
         settings = gameSettings
-        onSpeakNumber = speakNumber
+        onSpeakRoundCount = speakRoundCount
         onSpeakFeedback = speakFeedback
         _uiState.value = GameUiState(totalRounds = gameSettings.rounds)
         startNextRound()
@@ -47,6 +48,7 @@ class GameViewModel : ViewModel() {
         _uiState.value = state.copy(
             currentRound = state.currentRound + 1,
             round = RoundState(
+                animal = animal,
                 animals = animals,
                 count = count,
                 answers = answers,
@@ -62,8 +64,8 @@ class GameViewModel : ViewModel() {
         val newTapped = round.tappedIndices + index
         val newRound = round.copy(tappedIndices = newTapped)
         _uiState.value = _uiState.value.copy(round = newRound)
-        if (settings.voiceEnabled) {
-            onSpeakNumber?.invoke(newTapped.size)
+        if (settings.voiceMode != VoiceMode.NONE) {
+            onSpeakRoundCount?.invoke(newTapped.size, round.animal)
         }
     }
 
@@ -87,8 +89,8 @@ class GameViewModel : ViewModel() {
         )
 
         viewModelScope.launch {
-            if (settings.voiceEnabled) {
-                onSpeakNumber?.invoke(answer)
+            if (settings.voiceMode != VoiceMode.NONE) {
+                onSpeakRoundCount?.invoke(answer, round.animal)
                 delay(900)
                 onSpeakFeedback?.invoke(isCorrect)
             }

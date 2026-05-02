@@ -1,6 +1,5 @@
 package com.example.countnumber.ui.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -24,7 +23,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -34,7 +32,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -45,6 +42,7 @@ import com.example.countnumber.data.AppStrings
 import com.example.countnumber.data.GameSettings
 import com.example.countnumber.data.LayoutMode
 import com.example.countnumber.data.LeaderboardRepository
+import com.example.countnumber.data.VoiceMode
 import com.example.countnumber.ui.theme.BackgroundColor
 import com.example.countnumber.ui.theme.OrangePeel
 import com.example.countnumber.ui.theme.PrimaryColor
@@ -135,18 +133,35 @@ fun SettingsScreen(
                 }
             }
 
-            // Voice toggle
+            // Voice mode
             SettingsCard {
+                Text(AppStrings.voice(lang), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Spacer(Modifier.height(8.dp))
                 Row(
-                    Modifier.fillMaxWidth(),
-                    Arrangement.SpaceBetween,
-                    Alignment.CenterVertically
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text(AppStrings.voice(lang), fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                    Switch(
-                        checked = settings.voiceEnabled,
-                        onCheckedChange = { onSettingsChanged(settings.copy(voiceEnabled = it)) }
-                    )
+                    listOf(
+                        VoiceMode.NONE to AppStrings.voiceNone(lang),
+                        VoiceMode.NUMBER to AppStrings.voiceNumber(lang),
+                        VoiceMode.NUMBER_WITH_ANIMAL to AppStrings.voiceNumberWithAnimal(lang)
+                    ).forEach { (mode, label) ->
+                        val selected = settings.voiceMode == mode
+                        Button(
+                            onClick = { onSettingsChanged(settings.copy(voiceMode = mode)) },
+                            modifier = Modifier.weight(1f),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = if (selected) PrimaryColor else Color.LightGray
+                            ),
+                            shape = RoundedCornerShape(12.dp)
+                        ) {
+                            Text(
+                                text = label,
+                                color = Color.White,
+                                fontSize = 14.sp
+                            )
+                        }
+                    }
                 }
             }
 
@@ -155,7 +170,7 @@ fun SettingsScreen(
                 Text(AppStrings.layout(lang), fontSize = 18.sp, fontWeight = FontWeight.Bold)
                 Spacer(Modifier.height(8.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    LayoutMode.values().forEach { mode ->
+                    LayoutMode.entries.forEach { mode ->
                         val selected = settings.layoutMode == mode
                         Button(
                             onClick = { onSettingsChanged(settings.copy(layoutMode = mode)) },

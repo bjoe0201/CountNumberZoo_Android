@@ -62,12 +62,12 @@ app/src/main/java/com/example/countnumber/
 │   ├── GameState.kt                 — RoundState, GameUiState
 │   └── GameViewModel.kt             — round logic, scoring, distractor generation
 ├── tts/
-│   └── TtsManager.kt               — TextToSpeech wrapper (speak number / feedback)
+│   └── TtsManager.kt               — TextToSpeech wrapper (speak number / number+animal / feedback)
 ├── ui/
 │   ├── screens/
 │   │   ├── LanguageScreen.kt        — first-launch language picker (ZH / EN / JA)
 │   │   ├── HomeScreen.kt            — animated animals background + nav buttons
-│   │   ├── SettingsScreen.kt        — sliders + toggles (rounds, maxCount, voice, layout, language)
+│   │   ├── SettingsScreen.kt        — sliders + selectors (rounds, maxCount, voice mode, layout, language)
 │   │   ├── GameScreen.kt            — main gameplay + feedback overlay
 │   │   └── ResultScreen.kt          — score, emoji name picker, leaderboard
 │   ├── components/
@@ -92,8 +92,8 @@ Screen.LANGUAGE → Screen.HOME ⇄ Screen.SETTINGS
 
 - **LANGUAGE**: Full-screen picker; stored in `GameSettings.language`; accessible again via "切換語言" button on Home
 - **HOME**: 20 floating animated animals; Start / Settings / Leaderboard / Change Language
-- **SETTINGS**: Rounds (3–20), MaxCount (5–100), Voice toggle, Layout (Grid/Scattered), Language switcher
-- **GAME**: `AnimalGrid` fills available space via `BoxWithConstraints`; tap animals → TTS count; tap answer → TTS number then TTS feedback after 900 ms; auto-advance after 1500 ms
+- **SETTINGS**: Rounds (3–20), MaxCount (5–100), Voice mode (None / Number / Number+Animal), Layout (Grid/Scattered), Language switcher
+- **GAME**: `AnimalGrid` fills available space via `BoxWithConstraints`; tap animals → TTS count (number or number+animal per `VoiceMode`); tap answer → TTS selection then TTS feedback after 900 ms; auto-advance after 1500 ms
 - **RESULT**: Score + stats; emoji animal name picker (up to 8 emojis from 20 animals, repeatable, backspace); DataStore leaderboard top-10
 
 ## Key Logic
@@ -108,7 +108,7 @@ Screen.LANGUAGE → Screen.HOME ⇄ Screen.SETTINGS
 Uses `BoxWithConstraints` to compute `cellSize = min(availableWidth/cols, availableHeight/rows)`, capped at 96 dp, minimum 28 dp. Vertical scroll only enabled when cells would be < 24 dp.
 
 ### TTS on Answer Selection (`GameViewModel.selectAnswer`)
-1. Speak selected number immediately
+1. Speak selected number, or number + animal name, depending on `VoiceMode`
 2. Delay 900 ms
 3. Speak correct/wrong feedback
 4. Delay 1500 ms → advance to next round
@@ -134,14 +134,15 @@ Forced light mode only — no dark theme, no dynamic color. Child-friendly palet
 |---|------|------|------|
 | 1 | `app/build.gradle.kts` | `versionCode` | 整數，每版 +1（例：4） |
 | 2 | `app/build.gradle.kts` | `versionName` | 語意版號字串（例："1.0.3"） |
-| 3 | `app/src/main/java/com/example/countnumber/data/AppVersion.kt` | `APP_VERSION` | 與 `versionName` 相同（例："1.0.3"），顯示在主畫面右下角 |
-| 4 | `README.md` | 第一段 `**版本 Version：vX.X.X**` | 更新顯示版號 |
-| 5 | `CHANGELOG.md` | 頂部新增 `## [X.X.X] — YYYY-MM-DD` 區塊 | 記錄本版本變更內容 |
+| 3 | `app/src/main/java/com/example/countnumber/data/AppVersion.kt` | `APP_VERSION` | 與 `versionName` 相同（例："1.0.4"），顯示在主畫面右下角 |
+| 4 | `app/src/main/java/com/example/countnumber/data/AppVersion.kt` | `APP_BUILD_DATE` | 更新為發版日期（例："2026-05-03"） |
+| 5 | `README.md` | 第一段 `**版本 Version：vX.X.X**` | 更新顯示版號 |
+| 6 | `CHANGELOG.md` | 頂部新增 `## [X.X.X] — YYYY-MM-DD` 區塊 | 記錄本版本變更內容 |
 
 ### 更新後的發佈流程
 
 ```bash
-# 1. 更新上方5個地方後，構建 release APK
+# 1. 更新上方6個地方後，構建 release APK
 ./gradlew clean assembleRelease -x test
 
 # 2. 提交所有變更

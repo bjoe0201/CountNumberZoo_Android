@@ -2,7 +2,10 @@ package com.example.countnumber.tts
 
 import android.content.Context
 import android.speech.tts.TextToSpeech
+import com.example.countnumber.data.Animal
 import com.example.countnumber.data.AppLanguage
+import com.example.countnumber.data.VoiceMode
+import com.example.countnumber.data.localizedName
 import java.util.Locale
 
 class TtsManager(context: Context) {
@@ -16,11 +19,16 @@ class TtsManager(context: Context) {
         }
     }
 
-    fun speak(number: Int, lang: AppLanguage) {
-        if (!ready) return
-        val locale = localeFor(lang)
-        tts?.language = locale
-        tts?.speak(number.toString(), TextToSpeech.QUEUE_FLUSH, null, null)
+    fun speakGameCount(number: Int, animal: Animal, lang: AppLanguage, voiceMode: VoiceMode) {
+        when (voiceMode) {
+            VoiceMode.NONE -> return
+            VoiceMode.NUMBER -> speakText(number.toString(), lang)
+            VoiceMode.NUMBER_WITH_ANIMAL -> speakText(countPhrase(number, animal, lang), lang)
+        }
+    }
+
+    fun speakAnimalName(animal: Animal, lang: AppLanguage) {
+        speakText(animal.localizedName(lang), lang)
     }
 
     fun speakText(text: String, lang: AppLanguage) {
@@ -50,5 +58,11 @@ class TtsManager(context: Context) {
         AppLanguage.CHINESE -> Locale.TRADITIONAL_CHINESE
         AppLanguage.ENGLISH -> Locale.ENGLISH
         AppLanguage.JAPANESE -> Locale.JAPANESE
+    }
+
+    private fun countPhrase(number: Int, animal: Animal, lang: AppLanguage) = when (lang) {
+        AppLanguage.CHINESE -> "$number 隻${animal.localizedName(lang)}"
+        AppLanguage.ENGLISH -> "$number ${animal.localizedName(lang)}"
+        AppLanguage.JAPANESE -> "$number ${animal.localizedName(lang)}"
     }
 }
