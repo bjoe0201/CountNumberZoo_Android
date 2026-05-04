@@ -4,11 +4,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.countnumber.data.AppPreferencesRepository
 import com.example.countnumber.data.GameSettings
 import com.example.countnumber.data.LeaderboardRepository
 import com.example.countnumber.game.GameUiState
@@ -20,6 +23,8 @@ import com.example.countnumber.ui.screens.LanguageScreen
 import com.example.countnumber.ui.screens.ResultScreen
 import com.example.countnumber.ui.screens.SettingsScreen
 import com.example.countnumber.ui.theme.CountNumberTheme
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 enum class Screen { LANGUAGE, HOME, SETTINGS, GAME, RESULT }
 
@@ -33,17 +38,33 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         val repository = LeaderboardRepository(this)
+        val appPreferencesRepository = AppPreferencesRepository(this)
 
         setContent {
             CountNumberTheme {
-                var screen by remember { mutableStateOf(Screen.LANGUAGE) }
+                var screen by remember { mutableStateOf(Screen.HOME) }
                 var settings by remember { mutableStateOf(GameSettings()) }
                 var lastGameState by remember { mutableStateOf(GameUiState()) }
+                var startupResolved by remember { mutableStateOf(false) }
                 val gameViewModel: GameViewModel = viewModel()
+                val scope = rememberCoroutineScope()
+
+                LaunchedEffect(Unit) {
+                    val hasSavedLanguage = appPreferencesRepository.hasSavedLanguage.first()
+                    val savedLanguage = appPreferencesRepository.language.first()
+                    settings = settings.copy(language = savedLanguage)
+                    screen = if (hasSavedLanguage) Screen.HOME else Screen.LANGUAGE
+                    startupResolved = true
+                }
+
+                if (!startupResolved) return@CountNumberTheme
 
                 when (screen) {
                     Screen.LANGUAGE -> LanguageScreen { lang ->
                         settings = settings.copy(language = lang)
+                        scope.launch {
+                            appPreferencesRepository.saveLanguage(lang)
+                        }
                         screen = Screen.HOME
                     }
 
@@ -73,7 +94,15 @@ class MainActivity : ComponentActivity() {
 
                     Screen.SETTINGS -> SettingsScreen(
                         settings = settings,
-                        onSettingsChanged = { settings = it },
+                        onSettingsChanged = { updatedSettings ->
+                            val previousLanguage = settings.language
+                            settings = updatedSettings
+                            if (previousLanguage != updatedSettings.language) {
+                                scope.launch {
+                                    appPreferencesRepository.saveLanguage(updatedSettings.language)
+                                }
+                            }
+                        },
                         onBack = { screen = Screen.HOME },
                         leaderboardRepository = repository
                     )
