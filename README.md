@@ -7,7 +7,7 @@
 > A fun counting game for kids aged 1–6!
 > 1〜6歳のこどものためのかずあそびゲーム！
 
-**版本 Version：v1.0.4** ｜ 授權 License：MIT ｜ 平台 Platform：Android (API 31+)
+**版本 Version：v1.0.5** ｜ 授權 License：MIT ｜ 平台 Platform：Android (API 31+)
 
 </div>
 
