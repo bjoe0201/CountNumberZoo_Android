@@ -7,7 +7,7 @@
 > A fun counting game for kids aged 1–6!
 > 1〜6歳のこどものためのかずあそびゲーム！
 
-**版本 Version：v1.0.5** ｜ 授權 License：MIT ｜ 平台 Platform：Android (API 31+)
+**版本 Version：v1.0.6** ｜ 授權 License：MIT ｜ 平台 Platform：Android (API 31+)
 
 </div>
 
@@ -131,7 +131,7 @@ The app reads out the number and result with voice, so children learn while they
 
 ### 方法一：直接下載 APK（推薦給家長）
 1. 前往 [Releases](../../releases) 頁面
-2. 下載最新的 `app-debug.apk`
+2. 下載最新的 `app-release.apk`
 3. 在 Android 手機上安裝（需開啟「允許未知來源」）
 
 ### 方法二：自己編譯 Build from Source
@@ -140,9 +140,11 @@ The app reads out the number and result with voice, so children learn while they
 ```bash
 git clone https://github.com/YOUR_USERNAME/CountNumberZoo_Android.git
 cd CountNumberZoo_Android
-./gradlew assembleDebug
-# APK 在 app/build/outputs/apk/debug/app-debug.apk
+./gradlew assembleRelease
+# APK 在 app/build/outputs/apk/release/app-release.apk
 ```
+
+> `assembleRelease` 會產生已簽章、可安裝的 APK。若未設定正式 keystore，會使用本機 debug keystore 作為側載安裝用簽章；正式公開發佈建議依 `keystore.properties.example` 建立私有 release keystore。
 
 **系統需求：** Android 12 以上（API 31+）
 

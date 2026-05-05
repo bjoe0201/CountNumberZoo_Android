@@ -7,6 +7,15 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.0.6] — 2026-05-05
+
+### Fixed
+- **發佈 APK 無法安裝** — release APK 現在會輸出已簽章的 `app-release.apk`，避免 Android 顯示「應用程式套件無效」
+
+### Changed
+- **發佈流程修正** — 文件改為上傳 `app-release.apk`，不再使用無法安裝的 `app-release-unsigned.apk`
+- **簽章設定彈性化** — 支援 `keystore.properties` / Gradle property / 環境變數提供正式 release keystore；未設定時使用 debug keystore 產生可側載安裝 APK
+
 ## [1.0.5] — 2026-05-04
 
 ### Changed

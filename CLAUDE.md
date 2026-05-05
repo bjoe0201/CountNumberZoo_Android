@@ -10,6 +10,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 # Build release APK
 ./gradlew assembleRelease
+# Output: app/build/outputs/apk/release/app-release.apk (signed/installable)
 
 # Run unit tests
 ./gradlew test
@@ -142,7 +143,11 @@ Forced light mode only — no dark theme, no dynamic color. Child-friendly palet
 ### 更新後的發佈流程
 
 ```bash
-# 1. 更新上方6個地方後，構建 release APK
+# 0. 正式發佈前（建議）設定 release keystore
+#    複製 keystore.properties.example 為 keystore.properties，填入私有簽章資訊
+#    若未設定，assembleRelease 會使用 debug keystore 簽章，僅適合側載測試/家庭分享
+
+# 1. 更新上方6個地方後，構建已簽章、可安裝的 release APK
 ./gradlew clean assembleRelease -x test
 
 # 2. 提交所有變更
@@ -160,8 +165,8 @@ git push origin vX.X.X
 gh release delete vX.X.X-1 --yes
 git push origin :refs/tags/vX.X.X-1   # 若需要也刪除舊 tag
 
-# 6. 建立新 release 並上傳 APK
-gh release create vX.X.X "app/build/outputs/apk/release/app-release-unsigned.apk" \
+# 6. 建立新 release 並上傳已簽章 APK（不要上傳 app-release-unsigned.apk）
+gh release create vX.X.X "app/build/outputs/apk/release/app-release.apk" \
   --title "動物數數 vX.X.X — <標題>" \
   --notes "<繁體中文 release 說明>"
 ```
